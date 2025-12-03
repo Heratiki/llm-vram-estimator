@@ -1,5 +1,6 @@
 import pynvml
 import subprocess
+import platform
 
 
 def query_vram():
@@ -34,5 +35,28 @@ def query_vram():
             return [{"gpu": "AMD", "free_vram": 8.0}]  # Example fallback
     except FileNotFoundError:
         pass
+
+    # Windows fallback: attempt to query GPU AdapterRAM via wmic if available.
+    if platform.system() == "Windows":
+        try:
+            wmic = subprocess.run([
+                "wmic",
+                "path",
+                "Win32_VideoController",
+                "get",
+                "AdapterRAM"
+            ], capture_output=True, text=True)
+            if wmic.returncode == 0 and wmic.stdout:
+                values = []
+                for line in wmic.stdout.splitlines():
+                    line = line.strip()
+                    if line and line.isdigit():
+                        # AdapterRAM is reported in bytes. Convert to GB.
+                        values.append(int(line) / (1024 ** 3))
+                if values:
+                    # Conservative assumption: use total VRAM as free VRAM
+                    return [{"gpu": f"AMD-{i}", "free_vram": v} for i, v in enumerate(values)]
+        except FileNotFoundError:
+            pass
 
     return []
