@@ -1,8 +1,13 @@
 import requests
 
-def query_lmstudio_models():
+
+def query_lmstudio_models(timeout: float = 2.0):
+    """Query LM Studio's local HTTP API for installed models.
+
+    Uses a small timeout to avoid long blocks if the server isn't running.
+    """
     try:
-        response = requests.get("http://localhost:1234/v1/models")
+        response = requests.get("http://localhost:1234/v1/models", timeout=timeout)
         if response.status_code == 200:
             models = []
             for model in response.json():

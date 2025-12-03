@@ -1,6 +1,7 @@
 from rich.table import Table
 from rich.console import Console
 
+
 def display_table(results):
     table = Table(title="LLM VRAM Estimation")
 

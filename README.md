@@ -19,7 +19,9 @@ The `llm-vram-estimator` is a CLI tool designed to estimate the maximum safe tok
 2. Run the CLI tool:
 
     ```bash
-    poetry run python cli.py
+    poetry run python -m llm_vram_estimator.cli --help
+    # or to run the pipeline directly:
+    poetry run python -m llm_vram_estimator.cli --verbose
     ```
 
 ## Example Output
@@ -41,7 +43,7 @@ The `llm-vram-estimator` is a CLI tool designed to estimate the maximum safe tok
 To use the CLI, run the following command:
 
 ```bash
-poetry run python cli.py --help
+poetry run python -m llm_vram_estimator.cli --help
 ```
 
 This will display the available options and commands for interacting with the tool.

@@ -1,5 +1,6 @@
 import subprocess
 
+
 def query_ollama_models():
     try:
         result = subprocess.run(["ollama", "list"], capture_output=True, text=True)
